@@ -5,7 +5,9 @@
 @inject NavigationManager NavManager
 @using DeunaCall.Shared.Models
 @using Microsoft.AspNetCore.SignalR.Client
+@using System.Threading
 @implements IAsyncDisposable
+@inject IJSRuntime JS
 
 @if (isLoading)
 {
@@ -26,7 +28,7 @@ else
             <div class="alarm-card @(req.Type == RequestType.Emergency ? "emergency" : "")">
                 <div class="alarm-header">
                     <span class="alarm-room">Habitación: @req.Patient?.RoomNumber</span>
-                    <span class="alarm-time">@req.CreatedAt.ToLocalTime().ToString("HH:mm")</span>
+                    <span class="alarm-time">@GetWaitTime(req.CreatedAt)</span>
                 </div>
                 <div class="alarm-type">
                     @GetTypeName(req.Type)
@@ -56,6 +58,7 @@ else
     private bool isLoading = true;
     private HubConnection? hubConnection;
     private string token = "";
+    private PeriodicTimer? _timer;
 
     protected override async Task OnInitializedAsync()
     {
@@ -70,9 +73,10 @@ else
         Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         await LoadRequests();
+        StartTimer();
 
         hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavManager.ToAbsoluteUri("https://localhost:7222/callHub"), options =>
+            .WithUrl(NavManager.ToAbsoluteUri("/callHub"), options =>
             {
                 options.AccessTokenProvider = () => Task.FromResult(token);
             })
@@ -81,6 +85,7 @@ else
 
         hubConnection.On<CallRequest>("ReceiveNewCall", async (newRequest) =>
         {
+            await JS.InvokeVoidAsync("playAlertSound");
             await LoadRequests();
             await InvokeAsync(StateHasChanged);
         });
@@ -139,8 +144,25 @@ else
         _ => status.ToString()
     };
 
+    private string GetWaitTime(DateTime createdAt)
+    {
+        var diff = DateTime.UtcNow - createdAt;
+        if (diff.TotalMinutes < 1) return "Menos de 1 min";
+        return $"Hace {(int)diff.TotalMinutes} min";
+    }
+
+    private async void StartTimer()
+    {
+        _timer = new PeriodicTimer(TimeSpan.FromSeconds(60));
+        while (await _timer.WaitForNextTickAsync())
+        {
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
     public async ValueTask DisposeAsync()
     {
+        _timer?.Dispose();
         if (hubConnection is not null)
         {
             await hubConnection.DisposeAsync();
