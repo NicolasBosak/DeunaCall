@@ -72,3 +72,17 @@
     70% { box-shadow: 0 0 0 10px rgba(125, 45, 54, 0); }
     100% { box-shadow: 0 0 0 0 rgba(125, 45, 54, 0); }
 }
+
+@media (max-width: 768px) {
+    .topbar {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    .alarms-grid {
+        grid-template-columns: 1fr;
+    }
+    .dashboard-content {
+        padding: 1rem;
+    }
+}

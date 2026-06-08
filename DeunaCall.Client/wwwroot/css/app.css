@@ -239,3 +239,58 @@ body {
 .btn-primary:hover {
     background: var(--deuna-red-dark);
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .kiosk-header {
+        flex-direction: column;
+        padding-bottom: 1rem;
+    }
+    .kiosk-header img {
+        height: 80px;
+    }
+    .kiosk-header h1 {
+        font-size: 2rem;
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+    .call-grid {
+        gap: 1rem;
+    }
+    .call-btn {
+        font-size: 1.5rem;
+        border-radius: 20px;
+    }
+    .call-btn svg {
+        width: 60px;
+        height: 60px;
+    }
+    .status-card {
+        padding: 2rem;
+        max-width: 90%;
+    }
+    .status-card h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .call-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+    body {
+        overflow: auto;
+        height: auto;
+        min-height: 100vh;
+        align-items: flex-start;
+    }
+    .kiosk-container {
+        height: auto;
+        min-height: 100vh;
+    }
+    .pin-input {
+        font-size: 2rem;
+        padding: 1rem;
+    }
+}
