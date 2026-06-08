@@ -7,7 +7,12 @@
     <div class="topbar">
         <div style="display: flex; align-items: center; gap: 1rem;">
             <img src="logo.png" alt="Deuna Call Logo" style="height: 40px;" />
-            <h2 style="margin: 0;">Monitor de Enfermería</h2>
+            <h2 style="margin: 0; margin-right: 2rem;">Monitor de Enfermería</h2>
+            
+            <nav style="display: flex; gap: 0.5rem;">
+                <a href="/nurse/dashboard" style="text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; background-color: var(--deuna-beige-dark); color: white; font-weight: bold;">🚨 Alertas</a>
+                <a href="/nurse/patients" style="text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; background-color: var(--deuna-beige-dark); color: white; font-weight: bold;">👥 Pacientes</a>
+            </nav>
         </div>
         <button class="btn-logout" @onclick="Logout">Cerrar Sesión</button>
     </div>
