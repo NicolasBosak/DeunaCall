@@ -5,6 +5,7 @@
 @inject NavigationManager NavManager
 
 <div class="login-container">
+    <h2 style="color: var(--deuna-brown); margin-bottom: 2rem;">Acceso de Paciente</h2>
     <input type="password" @bind="accessCode" placeholder="CÓDIGO DE ACCESO" class="pin-input" maxlength="6" />
     <button class="btn-primary" @onclick="Login">INGRESAR</button>
     
@@ -12,6 +13,11 @@
     {
         <p style="color: var(--deuna-red); margin-top: 1rem; font-weight: bold;">@errorMessage</p>
     }
+
+    <a href="/" style="margin-top: 2rem; color: var(--deuna-beige-dark); text-decoration: none; font-size: 1.1rem; transition: color 0.3s;"
+       onmouseover="this.style.color='#7d2d36'" onmouseout="this.style.color='#c4ae9f'">
+        ← Volver a selección
+    </a>
 </div>
 
 @code {
