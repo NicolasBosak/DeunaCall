@@ -14,7 +14,14 @@
                 <a href="/nurse/patients" class="btn-nav">👥 Pacientes</a>
             </nav>
         </div>
-        <button class="btn-logout" @onclick="Logout">Cerrar Sesión</button>
+        <button class="btn-logout" @onclick="Logout">
+            <svg class="logout-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span class="logout-text" style="margin-left: 0.5rem;">Cerrar Sesión</span>
+        </button>
     </div>
     
     <div class="dashboard-content">

@@ -92,6 +92,9 @@
     .dashboard-content {
         padding: 1rem;
     }
+    .logout-text {
+        display: none;
+    }
 }
 
 .btn-nav {

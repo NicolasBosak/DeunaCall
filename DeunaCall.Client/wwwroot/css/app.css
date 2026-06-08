@@ -50,6 +50,7 @@ body {
     align-items: center;
     padding-bottom: 2rem;
     flex-shrink: 0;
+    flex-direction: column;
 }
 
 .kiosk-header img {
@@ -61,7 +62,8 @@ body {
     font-size: 3rem;
     font-weight: 700;
     color: var(--deuna-red);
-    margin-left: 1rem;
+    margin-left: 0;
+    margin-top: 1rem;
     letter-spacing: -1px;
 }
 
@@ -254,16 +256,11 @@ body {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .kiosk-header {
-        flex-direction: column;
-        padding-bottom: 1rem;
-    }
     .kiosk-header img {
         height: 80px;
     }
     .kiosk-header h1 {
         font-size: 2rem;
-        margin-left: 0;
         margin-top: 0.5rem;
     }
     .call-grid {
