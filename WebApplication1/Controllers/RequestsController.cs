@@ -26,6 +26,13 @@ public class RequestsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateRequest([FromBody] CallRequest request)
     {
+        var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(userIdString, out int patientId))
+        {
+            return Unauthorized("Token de paciente inválido o expirado");
+        }
+
+        request.PatientId = patientId;
         request.CreatedAt = DateTime.UtcNow;
         request.Status = RequestStatus.Pending;
 
