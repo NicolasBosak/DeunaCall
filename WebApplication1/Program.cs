@@ -78,4 +78,7 @@ app.MapControllers();
 // SignalR Hubs
 app.MapHub<CallHub>("/callHub");
 
+// Create DB and Seed
+await DbSeeder.SeedRolesAndAdminAsync(app.Services);
+
 app.Run();
