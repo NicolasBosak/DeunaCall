@@ -1,0 +1,46 @@
+@page "/"
+@page "/login"
+@layout DeunaCall.Client.Layout.KioskLayout
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject NavigationManager NavManager
+
+<div class="login-container">
+    <input type="password" @bind="accessCode" placeholder="CÓDIGO DE ACCESO" class="pin-input" maxlength="6" />
+    <button class="btn-primary" @onclick="Login">INGRESAR</button>
+    
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p style="color: var(--deuna-red); margin-top: 1rem; font-weight: bold;">@errorMessage</p>
+    }
+</div>
+
+@code {
+    private string accessCode = "";
+    private string errorMessage = "";
+
+    private async Task Login()
+    {
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/auth/login-patient", new { AccessCode = accessCode });
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<DeunaCall.Shared.DTOs.AuthResponseDto>();
+                if (result != null)
+                {
+                    await LocalStorage.SetItemAsync("authToken", result.Token);
+                    NavManager.NavigateTo("/board");
+                }
+            }
+            else
+            {
+                errorMessage = "Código inválido.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error de conexión.";
+        }
+    }
+}
