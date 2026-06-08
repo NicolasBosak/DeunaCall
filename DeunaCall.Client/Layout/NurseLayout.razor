@@ -1,0 +1,22 @@
+@inherits LayoutComponentBase
+@inject NavigationManager NavManager
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+
+<div class="dashboard-layout">
+    <div class="topbar">
+        <h2>Deuna Call - Monitor de Enfermería</h2>
+        <button class="btn-logout" @onclick="Logout">Cerrar Sesión</button>
+    </div>
+    
+    <div class="dashboard-content">
+        @Body
+    </div>
+</div>
+
+@code {
+    private async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("authToken");
+        NavManager.NavigateTo("/nurse/login");
+    }
+}

@@ -1,0 +1,149 @@
+@page "/nurse/dashboard"
+@layout DeunaCall.Client.Layout.NurseLayout
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject NavigationManager NavManager
+@using DeunaCall.Shared.Models
+@using Microsoft.AspNetCore.SignalR.Client
+@implements IAsyncDisposable
+
+@if (isLoading)
+{
+    <p>Cargando alarmas...</p>
+}
+else if (activeRequests == null || !activeRequests.Any())
+{
+    <div style="text-align: center; margin-top: 5rem; color: var(--deuna-beige-dark);">
+        <h2>No hay emergencias activas.</h2>
+        <p>Todo está tranquilo por ahora.</p>
+    </div>
+}
+else
+{
+    <div class="alarms-grid">
+        @foreach (var req in activeRequests)
+        {
+            <div class="alarm-card @(req.Type == RequestType.Emergency ? "emergency" : "")">
+                <div class="alarm-header">
+                    <span class="alarm-room">Habitación: @req.Patient?.RoomNumber</span>
+                    <span class="alarm-time">@req.CreatedAt.ToLocalTime().ToString("HH:mm")</span>
+                </div>
+                <div class="alarm-type">
+                    @GetTypeName(req.Type)
+                </div>
+                <div style="margin-bottom: 1rem; color: var(--deuna-brown);">
+                    Estado: <strong>@GetStatusName(req.Status)</strong><br />
+                    Paciente: @req.Patient?.Name
+                </div>
+                
+                <div class="alarm-actions">
+                    @if (req.Status == RequestStatus.Pending)
+                    {
+                        <button class="btn-attend" @onclick="() => UpdateStatus(req.Id, RequestStatus.InProcess)">Atender Llamado</button>
+                    }
+                    else if (req.Status == RequestStatus.InProcess)
+                    {
+                        <button class="btn-complete" @onclick="() => UpdateStatus(req.Id, RequestStatus.Attended)">Cerrar Llamado</button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<CallRequest> activeRequests = new();
+    private bool isLoading = true;
+    private HubConnection? hubConnection;
+    private string token = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var storedToken = await LocalStorage.GetItemAsync<string>("authToken");
+        if (string.IsNullOrEmpty(storedToken))
+        {
+            NavManager.NavigateTo("/nurse/login");
+            return;
+        }
+        
+        token = storedToken;
+        Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+        await LoadRequests();
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavManager.ToAbsoluteUri("https://localhost:7222/callHub"), options =>
+            {
+                options.AccessTokenProvider = () => Task.FromResult(token);
+            })
+            .WithAutomaticReconnect()
+            .Build();
+
+        hubConnection.On<CallRequest>("ReceiveNewCall", async (newRequest) =>
+        {
+            await LoadRequests();
+            await InvokeAsync(StateHasChanged);
+        });
+
+        hubConnection.On<int, RequestStatus>("CallStatusChanged", async (requestId, newStatus) =>
+        {
+            await LoadRequests();
+            await InvokeAsync(StateHasChanged);
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    private async Task LoadRequests()
+    {
+        isLoading = true;
+        try
+        {
+            var response = await Http.GetFromJsonAsync<List<CallRequest>>("api/requests");
+            if (response != null)
+            {
+                activeRequests = response;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        isLoading = false;
+        StateHasChanged();
+    }
+
+    private async Task UpdateStatus(int id, RequestStatus newStatus)
+    {
+        var response = await Http.PutAsJsonAsync($"api/requests/{id}/status", newStatus);
+        if (response.IsSuccessStatusCode)
+        {
+            await LoadRequests();
+        }
+    }
+
+    private string GetTypeName(RequestType type) => type switch
+    {
+        RequestType.Bathroom => "Baño",
+        RequestType.Medication => "Medicación",
+        RequestType.Mobilization => "Movilización",
+        RequestType.Emergency => "EMERGENCIA",
+        _ => type.ToString()
+    };
+
+    private string GetStatusName(RequestStatus status) => status switch
+    {
+        RequestStatus.Pending => "Pendiente de Atención",
+        RequestStatus.InProcess => "En Camino",
+        RequestStatus.Attended => "Solucionado",
+        _ => status.ToString()
+    };
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}
