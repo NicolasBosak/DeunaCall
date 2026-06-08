@@ -240,6 +240,7 @@ body {
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     width: 100%;
+    box-sizing: border-box;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -284,6 +285,7 @@ body {
 }
 
 @media (max-width: 480px) {
+    .logout-text-kiosk { display: none; }
     .call-grid {
         grid-template-columns: 1fr;
         grid-template-rows: auto;
