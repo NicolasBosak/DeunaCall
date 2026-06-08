@@ -79,10 +79,39 @@
         gap: 1rem;
         text-align: center;
     }
+    .topbar > div {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .topbar h2 {
+        margin-right: 0 !important;
+    }
     .alarms-grid {
         grid-template-columns: 1fr;
     }
     .dashboard-content {
         padding: 1rem;
     }
+}
+
+.btn-nav {
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background-color: var(--deuna-beige-dark);
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: inline-block;
+}
+
+.btn-nav:hover {
+    background-color: var(--deuna-brown);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-nav:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
