@@ -276,10 +276,18 @@
         width: 100%; 
         overflow-x: auto; 
         padding-bottom: 0.5rem;
+        justify-content: center;
     }
     .admin-nav li { margin-bottom: 0; white-space: nowrap; }
     .admin-main { padding: 1rem; }
-    .btn-logout-admin { display: block; margin-top: 1rem; width: 100%; }
+    
+    .btn-logout-admin { 
+        display: block; 
+        margin-top: 1rem; 
+        width: auto; 
+        padding: 0.5rem 0.8rem;
+    }
+    .logout-text { display: none; }
     
     .admin-table { display: block; overflow-x: auto; white-space: nowrap; }
     
