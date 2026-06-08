@@ -40,6 +40,7 @@ body {
     flex-direction: column;
     padding: 2rem;
     box-sizing: border-box;
+    align-items: center;
 }
 
 /* Header / Logo Area */
@@ -71,6 +72,8 @@ body {
     grid-template-rows: repeat(2, 1fr);
     gap: 2rem;
     flex-grow: 1;
+    width: 100%;
+    max-width: 800px;
 }
 
 /* Big Action Buttons */
@@ -129,7 +132,7 @@ body {
 .call-btn-emergency:hover, .call-btn-emergency:active {
     transform: translateY(-5px) scale(1.05);
     animation: none;
-    box-shadow: 0 0 40px var(--deuna-red);
+    box-shadow: 0 10px 40px var(--deuna-red);
 }
 
 /* Keyframes for emergency pulse */
@@ -216,11 +219,12 @@ body {
     color: var(--deuna-brown);
     margin-bottom: 2rem;
     outline: none;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .pin-input:focus {
     border-color: var(--deuna-red);
+    box-shadow: 0 0 15px rgba(125, 45, 54, 0.2);
 }
 
 .btn-primary {
@@ -232,12 +236,20 @@ body {
     font-weight: bold;
     border-radius: 20px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:hover {
     background: var(--deuna-red-dark);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(125, 45, 54, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive adjustments */
