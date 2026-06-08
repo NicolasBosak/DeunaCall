@@ -78,4 +78,7 @@ app.MapControllers();
 // SignalR Hubs
 app.MapHub<CallHub>("/callHub");
 
+// Seed roles and default users
+await DbSeeder.SeedRolesAndAdminAsync(app.Services);
+
 app.Run();
