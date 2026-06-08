@@ -1,0 +1,91 @@
+@page "/admin/patients"
+@layout AdminLayout
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject NavigationManager NavManager
+@using DeunaCall.Shared.Models
+@using DeunaCall.Shared.DTOs
+
+<h1 class="admin-title">Gestión de Pacientes</h1>
+
+<button class="btn-admin-action" @onclick="() => showForm = !showForm">
+    @(showForm ? "✕ Cancelar" : "+ Admitir Paciente")
+</button>
+
+@if (showForm)
+{
+    <div class="admin-form-card">
+        <input type="text" @bind="newPatient.Name" placeholder="Nombre del Paciente" class="admin-input" />
+        <input type="text" @bind="newPatient.RoomNumber" placeholder="Número de Habitación" class="admin-input" />
+        <button class="btn-admin-save" @onclick="AdmitPatient">Guardar</button>
+    </div>
+}
+
+@if (patients == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Habitación</th>
+                <th>Código de Acceso</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in patients)
+            {
+                <tr>
+                    <td>@p.Id</td>
+                    <td>@p.Name</td>
+                    <td>@p.RoomNumber</td>
+                    <td><code>@p.AccessCode</code></td>
+                    <td>
+                        <button class="btn-table-delete" @onclick="() => DeletePatient(p.Id)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Patient>? patients;
+    private CreatePatientDto newPatient = new();
+    private bool showForm = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await LocalStorage.GetItemAsync<string>("authToken");
+        if (string.IsNullOrEmpty(token)) { NavManager.NavigateTo("/admin/login"); return; }
+        Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        await LoadPatients();
+    }
+
+    private async Task LoadPatients()
+    {
+        patients = await Http.GetFromJsonAsync<List<Patient>>("api/patients");
+    }
+
+    private async Task AdmitPatient()
+    {
+        var response = await Http.PostAsJsonAsync("api/patients/admit", newPatient);
+        if (response.IsSuccessStatusCode)
+        {
+            newPatient = new();
+            showForm = false;
+            await LoadPatients();
+        }
+    }
+
+    private async Task DeletePatient(int id)
+    {
+        await Http.DeleteAsync($"api/patients/{id}");
+        await LoadPatients();
+    }
+}

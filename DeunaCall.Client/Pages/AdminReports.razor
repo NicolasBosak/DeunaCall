@@ -1,0 +1,139 @@
+@page "/admin/reports"
+@layout AdminLayout
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject NavigationManager NavManager
+@using DeunaCall.Shared.DTOs
+
+<h1 class="admin-title">Reportes Mensuales</h1>
+
+<div class="report-controls">
+    <select @bind="selectedYear" class="admin-input" style="width: auto;">
+        @for (int y = 2024; y <= DateTime.Now.Year + 1; y++)
+        {
+            <option value="@y">@y</option>
+        }
+    </select>
+    <select @bind="selectedMonth" class="admin-input" style="width: auto;">
+        @{ string[] monthNames = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }; }
+        @for (int m = 1; m <= 12; m++)
+        {
+            <option value="@m">@monthNames[m - 1]</option>
+        }
+    </select>
+    <button class="btn-admin-save" @onclick="LoadReport">Generar Reporte</button>
+</div>
+
+@if (isLoading)
+{
+    <p>Cargando reporte...</p>
+}
+else if (report != null)
+{
+    <div class="report-cards">
+        <div class="report-card">
+            <div class="report-card-value">@report.TotalRequests</div>
+            <div class="report-card-label">Total Solicitudes</div>
+        </div>
+        <div class="report-card @GetResponseTimeClass()">
+            <div class="report-card-value">@report.AverageResponseTimeMinutes min</div>
+            <div class="report-card-label">Tiempo Promedio Respuesta</div>
+        </div>
+        <div class="report-card">
+            <div class="report-card-value">@report.FastestResponseMinutes min</div>
+            <div class="report-card-label">Respuesta Más Rápida</div>
+        </div>
+        <div class="report-card">
+            <div class="report-card-value">@report.SlowestResponseMinutes min</div>
+            <div class="report-card-label">Respuesta Más Lenta</div>
+        </div>
+    </div>
+
+    <div class="report-section">
+        <h3>Solicitudes por Tipo</h3>
+        <table class="admin-table">
+            <thead><tr><th>Tipo</th><th>Cantidad</th><th>Gráfica</th></tr></thead>
+            <tbody>
+                @foreach (var kv in report.ByType)
+                {
+                    var pct = report.TotalRequests > 0 ? (double)kv.Value / report.TotalRequests * 100 : 0;
+                    <tr>
+                        <td>@TranslateType(kv.Key)</td>
+                        <td>@kv.Value</td>
+                        <td>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: @pct%; background: @GetTypeColor(kv.Key);"></div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="report-section">
+        <h3>Solicitudes por Día del Mes</h3>
+        <div class="chart-bars">
+            @{ var maxDay = report.RequestsByDay.Max(d => d.Count); }
+            @foreach (var day in report.RequestsByDay.Where(d => d.Count > 0))
+            {
+                var height = maxDay > 0 ? (double)day.Count / maxDay * 100 : 0;
+                <div class="chart-bar-wrapper">
+                    <div class="chart-bar" style="height: @height%;" title="@day.Count solicitudes"></div>
+                    <span class="chart-bar-label">@day.Day</span>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    private int selectedYear = DateTime.Now.Year;
+    private int selectedMonth = DateTime.Now.Month;
+    private MonthlyReportDto? report;
+    private bool isLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await LocalStorage.GetItemAsync<string>("authToken");
+        if (string.IsNullOrEmpty(token)) { NavManager.NavigateTo("/admin/login"); return; }
+        Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        await LoadReport();
+    }
+
+    private async Task LoadReport()
+    {
+        isLoading = true;
+        try
+        {
+            report = await Http.GetFromJsonAsync<MonthlyReportDto>($"api/reports/monthly?year={selectedYear}&month={selectedMonth}");
+        }
+        catch { report = null; }
+        isLoading = false;
+    }
+
+    private string GetResponseTimeClass() => report?.AverageResponseTimeMinutes switch
+    {
+        <= 5 => "report-card-green",
+        <= 10 => "report-card-yellow",
+        _ => "report-card-red"
+    };
+
+    private string TranslateType(string type) => type switch
+    {
+        "Bathroom" => "🚿 Baño",
+        "Medication" => "💊 Medicación",
+        "Mobilization" => "🚶 Movilización",
+        "Emergency" => "🚨 Emergencia",
+        _ => type
+    };
+
+    private string GetTypeColor(string type) => type switch
+    {
+        "Bathroom" => "#4a90d9",
+        "Medication" => "#50c878",
+        "Mobilization" => "#f5a623",
+        "Emergency" => "#7d2d36",
+        _ => "#999"
+    };
+}

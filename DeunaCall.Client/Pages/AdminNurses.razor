@@ -1,0 +1,101 @@
+@page "/admin/nurses"
+@layout AdminLayout
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject NavigationManager NavManager
+@using DeunaCall.Shared.DTOs
+
+<h1 class="admin-title">Gestión de Enfermeras</h1>
+
+<button class="btn-admin-action" @onclick="() => showForm = !showForm">
+    @(showForm ? "✕ Cancelar" : "+ Registrar Enfermera")
+</button>
+
+@if (showForm)
+{
+    <div class="admin-form-card">
+        <input type="text" @bind="newNurse.FullName" placeholder="Nombre Completo" class="admin-input" />
+        <input type="text" @bind="newNurse.Username" placeholder="Usuario" class="admin-input" />
+        <input type="email" @bind="newNurse.Email" placeholder="Email" class="admin-input" />
+        <input type="password" @bind="newNurse.Password" placeholder="Contraseña" class="admin-input" />
+        <button class="btn-admin-save" @onclick="CreateNurse">Guardar</button>
+        @if (!string.IsNullOrEmpty(errorMsg))
+        {
+            <p style="color: var(--deuna-red); margin-top: 0.5rem;">@errorMsg</p>
+        }
+    </div>
+}
+
+@if (nurses == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Nombre Completo</th>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var n in nurses)
+            {
+                <tr>
+                    <td>@n.FullName</td>
+                    <td>@n.UserName</td>
+                    <td>@n.Email</td>
+                    <td>
+                        <button class="btn-table-delete" @onclick="() => DeleteNurse(n.Id)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<NurseListItemDto>? nurses;
+    private CreateNurseDto newNurse = new();
+    private bool showForm = false;
+    private string errorMsg = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await LocalStorage.GetItemAsync<string>("authToken");
+        if (string.IsNullOrEmpty(token)) { NavManager.NavigateTo("/admin/login"); return; }
+        Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        await LoadNurses();
+    }
+
+    private async Task LoadNurses()
+    {
+        nurses = await Http.GetFromJsonAsync<List<NurseListItemDto>>("api/nurses");
+    }
+
+    private async Task CreateNurse()
+    {
+        errorMsg = "";
+        var response = await Http.PostAsJsonAsync("api/nurses", newNurse);
+        if (response.IsSuccessStatusCode)
+        {
+            newNurse = new();
+            showForm = false;
+            await LoadNurses();
+        }
+        else
+        {
+            var errors = await response.Content.ReadFromJsonAsync<string[]>();
+            errorMsg = errors != null ? string.Join(", ", errors) : "Error al crear enfermera.";
+        }
+    }
+
+    private async Task DeleteNurse(string id)
+    {
+        await Http.DeleteAsync($"api/nurses/{id}");
+        await LoadNurses();
+    }
+}
