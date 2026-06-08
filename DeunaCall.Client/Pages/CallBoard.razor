@@ -49,7 +49,7 @@
         Http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavManager.ToAbsoluteUri("https://localhost:7222/callHub"), options =>
+            .WithUrl(NavManager.ToAbsoluteUri("/callHub"), options =>
             {
                 options.AccessTokenProvider = () => Task.FromResult(token);
             })

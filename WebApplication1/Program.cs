@@ -57,6 +57,9 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader());
 });
 
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -67,6 +70,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseBlazorFrameworkFiles();
+app.UseStaticFiles();
 
 app.UseCors("AllowAll");
 
@@ -78,7 +83,16 @@ app.MapControllers();
 // SignalR Hubs
 app.MapHub<CallHub>("/callHub");
 
+// Apply migrations automatically
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await db.Database.MigrateAsync();
+}
+
 // Seed roles and default users
 await DbSeeder.SeedRolesAndAdminAsync(app.Services);
+
+app.MapFallbackToFile("index.html");
 
 app.Run();
