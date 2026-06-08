@@ -1,0 +1,33 @@
+@inherits LayoutComponentBase
+@inject NavigationManager NavManager
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+
+<div class="admin-layout">
+    <nav class="admin-sidebar">
+        <div class="admin-sidebar-header">
+            <svg width="36" height="36" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" rx="20" fill="#7d2d36" />
+                <path d="M30 50 L45 65 L70 35" stroke="#f9f2ec" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>Panel Admin</span>
+        </div>
+        <ul class="admin-nav">
+            <li><a href="/admin/patients" class="admin-nav-link">👥 Pacientes</a></li>
+            <li><a href="/admin/nurses" class="admin-nav-link">👩‍⚕️ Enfermeras</a></li>
+            <li><a href="/admin/reports" class="admin-nav-link">📊 Reportes</a></li>
+        </ul>
+        <button class="btn-logout-admin" @onclick="Logout">Cerrar Sesión</button>
+    </nav>
+
+    <main class="admin-main">
+        @Body
+    </main>
+</div>
+
+@code {
+    private async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("authToken");
+        NavManager.NavigateTo("/");
+    }
+}

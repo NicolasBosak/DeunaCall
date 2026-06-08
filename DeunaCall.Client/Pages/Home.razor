@@ -1,7 +1,18 @@
-﻿@page "/"
+@page "/"
+@layout KioskLayout
 
-<PageTitle>Home</PageTitle>
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+<div class="login-container" style="max-width: 600px; text-align: center;">
+    <p style="color: var(--deuna-beige-dark); margin-bottom: 3rem; font-size: 1.5rem;">Seleccione su portal de acceso:</p>
+    
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; width: 100%; max-width: 400px; margin: 0 auto;">
+        <a href="/login" class="btn-primary" style="text-decoration: none; text-align: center; background-color: var(--deuna-red); padding: 1.5rem; font-size: 1.5rem; border-radius: 20px;">
+            🏥 Soy Paciente
+        </a>
+        <a href="/nurse/login" class="btn-primary" style="text-decoration: none; text-align: center; background-color: var(--deuna-brown); padding: 1.5rem; font-size: 1.5rem; border-radius: 20px;">
+            👩‍⚕️ Soy Enfermera
+        </a>
+        <a href="/admin/login" class="btn-primary" style="text-decoration: none; text-align: center; background-color: var(--deuna-red-dark); padding: 1.5rem; font-size: 1.5rem; border-radius: 20px;">
+            🔧 Soy Supervisor
+        </a>
+    </div>
+</div>

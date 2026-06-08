@@ -1,11 +1,11 @@
-@page "/"
 @page "/login"
-@layout DeunaCall.Client.Layout.KioskLayout
+@layout KioskLayout
 @inject HttpClient Http
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject NavigationManager NavManager
 
 <div class="login-container">
+    <h2 style="color: var(--deuna-brown); margin-bottom: 2rem;">Acceso de Paciente</h2>
     <input type="password" @bind="accessCode" placeholder="CÓDIGO DE ACCESO" class="pin-input" maxlength="6" />
     <button class="btn-primary" @onclick="Login">INGRESAR</button>
     
@@ -13,6 +13,10 @@
     {
         <p style="color: var(--deuna-red); margin-top: 1rem; font-weight: bold;">@errorMessage</p>
     }
+
+    <a href="/" style="margin-top: 2rem; color: var(--deuna-beige-dark); text-decoration: none; font-size: 1.1rem;">
+        ← Volver a selección
+    </a>
 </div>
 
 @code {
@@ -38,7 +42,7 @@
                 errorMessage = "Código inválido.";
             }
         }
-        catch (Exception ex)
+        catch
         {
             errorMessage = "Error de conexión.";
         }

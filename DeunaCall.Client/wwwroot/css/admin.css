@@ -1,0 +1,271 @@
+/* Admin Layout */
+.admin-layout {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.admin-sidebar {
+    width: 260px;
+    background: var(--deuna-brown);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    flex-shrink: 0;
+}
+
+.admin-sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    margin-bottom: 1.5rem;
+}
+
+.admin-sidebar-header span {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.admin-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.admin-nav li { margin-bottom: 0.5rem; }
+
+.admin-nav-link {
+    display: block;
+    padding: 0.8rem 1rem;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    font-size: 1rem;
+}
+
+.admin-nav-link:hover {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    transform: translateX(4px);
+}
+
+.btn-logout-admin {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.7);
+    padding: 0.7rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.btn-logout-admin:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.admin-main {
+    flex-grow: 1;
+    padding: 2rem 3rem;
+    overflow-y: auto;
+    background: var(--deuna-beige);
+}
+
+.admin-title {
+    font-size: 2rem;
+    color: var(--deuna-brown);
+    margin-bottom: 1.5rem;
+}
+
+/* Admin Tables */
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(50,41,36,0.08);
+    margin-top: 1.5rem;
+}
+
+.admin-table thead { background: var(--deuna-brown); color: white; }
+.admin-table th { padding: 1rem 1.2rem; text-align: left; font-weight: 600; font-size: 0.9rem; }
+.admin-table td { padding: 0.9rem 1.2rem; border-bottom: 1px solid var(--deuna-beige); color: var(--deuna-brown); }
+.admin-table tbody tr:hover { background: rgba(249,242,236,0.6); }
+.admin-table code { background: var(--deuna-beige); padding: 0.3rem 0.6rem; border-radius: 6px; font-weight: bold; color: var(--deuna-red); }
+
+/* Admin Buttons */
+.btn-admin-action {
+    background: var(--deuna-red);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-admin-action:hover { background: var(--deuna-red-dark); transform: translateY(-2px); }
+
+.btn-admin-save {
+    background: var(--deuna-red);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-admin-save:hover { background: var(--deuna-red-dark); }
+
+.btn-table-delete {
+    background: transparent;
+    color: var(--deuna-red);
+    border: 1px solid var(--deuna-red);
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+
+.btn-table-delete:hover { background: var(--deuna-red); color: white; }
+
+/* Admin Forms */
+.admin-form-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 16px rgba(50,41,36,0.08);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+    animation: slideIn 0.3s ease-out;
+}
+
+.admin-input {
+    padding: 0.7rem 1rem;
+    border: 2px solid var(--deuna-beige-dark);
+    border-radius: 10px;
+    font-size: 1rem;
+    color: var(--deuna-brown);
+    outline: none;
+    transition: border-color 0.3s;
+    width: 200px;
+}
+
+.admin-input:focus { border-color: var(--deuna-red); }
+
+/* Report Controls */
+.report-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+/* Report Summary Cards */
+.report-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.report-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(50,41,36,0.08);
+    border-top: 4px solid var(--deuna-beige-dark);
+    transition: transform 0.3s;
+}
+
+.report-card:hover { transform: translateY(-4px); }
+.report-card-green { border-top-color: #50c878; }
+.report-card-yellow { border-top-color: #f5a623; }
+.report-card-red { border-top-color: #e74c3c; }
+.report-card-value { font-size: 2.2rem; font-weight: 700; color: var(--deuna-brown); }
+.report-card-label { font-size: 0.9rem; color: var(--deuna-beige-dark); margin-top: 0.5rem; }
+
+.report-section {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 16px rgba(50,41,36,0.08);
+}
+
+.report-section h3 { color: var(--deuna-brown); margin-bottom: 1rem; }
+
+/* Bar Chart */
+.bar-container {
+    width: 100%;
+    height: 20px;
+    background: var(--deuna-beige);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.6s ease;
+}
+
+/* Daily Chart */
+.chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 180px;
+    padding: 1rem 0;
+}
+
+.chart-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.chart-bar {
+    width: 100%;
+    max-width: 24px;
+    background: linear-gradient(180deg, var(--deuna-red), var(--deuna-red-dark));
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+    transition: height 0.5s ease;
+}
+
+.chart-bar:hover { opacity: 0.8; }
+.chart-bar-label { font-size: 0.7rem; color: #999; margin-top: 4px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-layout { flex-direction: column; }
+    .admin-sidebar { width: 100%; flex-direction: row; padding: 1rem; align-items: center; }
+    .admin-sidebar-header { padding-bottom: 0; border-bottom: none; margin-bottom: 0; }
+    .admin-nav { display: flex; gap: 0.5rem; }
+    .admin-nav li { margin-bottom: 0; }
+    .admin-main { padding: 1rem; }
+    .btn-logout-admin { display: none; }
+}

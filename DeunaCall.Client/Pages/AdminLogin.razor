@@ -1,11 +1,11 @@
-@page "/nurse/login"
+@page "/admin/login"
 @layout KioskLayout
 @inject HttpClient Http
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject NavigationManager NavManager
 
 <div class="login-container">
-    <h2 style="color: var(--deuna-brown); margin-bottom: 2rem;">Acceso de Personal</h2>
+    <h2 style="color: var(--deuna-brown); margin-bottom: 2rem;">Acceso de Supervisor</h2>
     <input type="text" @bind="username" placeholder="Usuario" class="pin-input" style="letter-spacing: normal; font-size: 1.5rem;" />
     <input type="password" @bind="password" placeholder="Contraseña" class="pin-input" style="letter-spacing: normal; font-size: 1.5rem;" />
     
@@ -34,10 +34,14 @@
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<DeunaCall.Shared.DTOs.AuthResponseDto>();
-                if (result != null)
+                if (result != null && result.Role == "SuperAdmin")
                 {
                     await LocalStorage.SetItemAsync("authToken", result.Token);
-                    NavManager.NavigateTo("/nurse/dashboard");
+                    NavManager.NavigateTo("/admin/patients");
+                }
+                else
+                {
+                    errorMessage = "No tiene permisos de supervisor.";
                 }
             }
             else
