@@ -1,0 +1,74 @@
+/* Dashboard Layout */
+.dashboard-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: var(--deuna-beige);
+    width: 100vw;
+    overflow: hidden;
+}
+.topbar {
+    background: var(--deuna-brown);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.topbar h2 { margin: 0; font-size: 1.5rem; }
+.btn-logout { background: transparent; border: 1px solid white; color: white; border-radius: 8px; padding: 0.5rem 1rem; cursor: pointer; transition: all 0.3s; }
+.btn-logout:hover { background: white; color: var(--deuna-brown); }
+
+.dashboard-content {
+    padding: 2rem;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+/* Dashboard Cards */
+.alarms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+.alarm-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(50, 41, 36, 0.1);
+    border-left: 8px solid var(--deuna-beige-dark);
+    display: flex;
+    flex-direction: column;
+    animation: slideIn 0.3s ease-out;
+}
+.alarm-card.emergency {
+    border-left-color: var(--deuna-red);
+    animation: slideIn 0.3s ease-out, pulse-border 2s infinite;
+}
+.alarm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--deuna-beige);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+.alarm-room { font-size: 1.2rem; font-weight: bold; color: var(--deuna-brown); }
+.alarm-time { font-size: 0.9rem; color: #888; }
+.alarm-type { font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; color: var(--deuna-red); }
+.alarm-actions { display: flex; gap: 1rem; margin-top: auto; }
+.btn-attend { background: var(--deuna-red); color: white; border: none; padding: 0.8rem; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1; transition: background 0.3s; }
+.btn-attend:hover { background: var(--deuna-red-dark); }
+.btn-complete { background: var(--deuna-brown); color: white; border: none; padding: 0.8rem; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1; transition: opacity 0.3s; }
+.btn-complete:hover { opacity: 0.9; }
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0 rgba(125, 45, 54, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(125, 45, 54, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(125, 45, 54, 0); }
+}
