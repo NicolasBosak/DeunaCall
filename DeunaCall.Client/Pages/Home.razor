@@ -1,16 +1,15 @@
 @page "/"
 @layout KioskLayout
 
-<div class="login-container" style="max-width: 600px;">
-    <h1 style="color: var(--deuna-brown); font-size: 3rem; margin-bottom: 1rem;">Deuna Call</h1>
-    <p style="color: var(--deuna-beige-dark); margin-bottom: 3rem; font-size: 1.2rem;">Seleccione el portal de acceso:</p>
+<div class="login-container" style="max-width: 600px; text-align: center;">
+    <p style="color: var(--deuna-beige-dark); margin-bottom: 3rem; font-size: 1.5rem;">Seleccione su portal de acceso:</p>
     
-    <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-        <a href="/login" class="btn-primary" style="text-decoration: none; padding: 1.5rem 3rem; font-size: 1.2rem; background-color: var(--deuna-red);">
-            Soy Paciente
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; width: 100%; max-width: 400px; margin: 0 auto;">
+        <a href="/login" class="btn-primary" style="text-decoration: none; text-align: center; background-color: var(--deuna-red); padding: 1.5rem; font-size: 1.5rem; border-radius: 20px;">
+            <span style="font-size: 2rem; margin-right: 10px;">🏥</span> Soy Paciente
         </a>
-        <a href="/nurse/login" class="btn-primary" style="text-decoration: none; padding: 1.5rem 3rem; font-size: 1.2rem; background-color: var(--deuna-brown);">
-            Soy Enfermera
+        <a href="/nurse/login" class="btn-primary" style="text-decoration: none; text-align: center; background-color: var(--deuna-brown); padding: 1.5rem; font-size: 1.5rem; border-radius: 20px;">
+            <span style="font-size: 2rem; margin-right: 10px;">👩‍⚕️</span> Soy Enfermera
         </a>
     </div>
 </div>

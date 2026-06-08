@@ -1,9 +1,13 @@
 @inherits LayoutComponentBase
 
 <div class="kiosk-container">
-    <div class="kiosk-header">
-        <img src="logo.png" alt="Deuna Call Logo" />
-        <h1>Deuna Call</h1>
+    <div class="kiosk-header" style="margin-bottom: 2rem;">
+        <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100" height="100" rx="20" fill="#7d2d36" />
+            <path d="M30 50 L45 65 L70 35" stroke="#f9f2ec" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M35 30 L65 30 M35 70 L65 70" stroke="#c4ae9f" stroke-width="6" stroke-linecap="round" />
+        </svg>
+        <h1 style="color: var(--deuna-red); font-size: 3.5rem; margin-left: 1rem; margin-bottom: 0;">Deuna Call</h1>
     </div>
     
     @Body
