@@ -1,0 +1,30 @@
+name: .NET CI - Static Code Analysis & Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build_and_analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore DeunaCall.slnx || dotnet restore
+
+    - name: Check Code Formatting (Static Analysis)
+      run: dotnet format --verify-no-changes
+      continue-on-error: true # Opcional: no romperá el pipeline si solo hay errores de formato visuales
+
+    - name: Build Solution
+      run: dotnet build --no-restore --configuration Release

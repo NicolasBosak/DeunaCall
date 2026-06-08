@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="DeunaCall.Client/DeunaCall.Client.csproj" />
+  <Project Path="DeunaCall.Data/DeunaCall.Data.csproj" />
+  <Project Path="DeunaCall.Shared/DeunaCall.Shared.csproj" />
+  <Project Path="WebApplication1/DeunaCall.Api.csproj" />
+</Solution>

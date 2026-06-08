@@ -1,0 +1,40 @@
+Requerimientos de la Aplicación Deuna call 
+Problema que resuelve
+Actualmente los pacientes presionan un timbre convencional y el personal de enfermería no conoce la necesidad específica hasta llegar a la habitación, lo que genera retrasos y dificulta la priorización de emergencias.
+Usuarios del sistema
+Paciente: Genera solicitudes de atención. 
+Personal de enfermería: Recibe y gestiona las solicitudes.
+Supervisión de enfermería 
+Funcionalidades para pacientes
+La pantalla del paciente debe mostrar botones grandes y fáciles de usar:
+Baño
+Medicación/bomba
+Movilización
+Emergencia
+Funcionalidades para enfermería
+Cuando un paciente genere una solicitud, la aplicación debe mostrar:
+Número de habitación. 
+Nombre del paciente. 
+Tipo de solicitud. 
+Hora de creación. 
+Tiempo de espera 
+Cuando la enfermera recibe la solicitud a ella le debe aparecer 
+• Aceptar• En proceso• Atendida
+Reportes
+La aplicación debe generar: Reporte mensual 
+Indicadores 
+Tiempo promedio de respuesta.
+Notificaciones
+Notificaciones instantáneas a su dispositivo electrónico del personal de enfermería. 
+Alerta para el llamado
+Requerimientos No Funcionales
+La interfaz debe ser intuitiva y fácil de usar.
+Los botones deben ser grandes y visibles.
+El sistema debe funcionar en tiempo real.
+La información debe mantenerse protegida.
+La aplicación debe estar disponible 24/7.
+Debe generar notificaciones visuales y sonoras.
+Debe ser compatible con tabletas, computadoras y pantallas de monitoreo.
+Debe mantener un funcionamiento continuo dentro de la red hospitalaria.
+Flujograma 
+INICIO↓Paciente necesita ayuda↓Selecciona tipo de solicitud:• Baño• Medicación/Bomba• Movilización• Emergencia↓Sistema registra:- Nombre del paciente- Habitación- Tipo de solicitud- Hora del llamado↓Se envía alerta instantánea a la estación de enfermería↓La enfermera recibe la solicitud↓¿Es una emergencia?→ Sí: Se genera alerta roja y sonora→ No: Se coloca en la cola de atención según prioridad↓La enfermera acepta la solicitud↓Estado cambia a "En proceso"↓La enfermera atiende al paciente↓Marca la solicitud como "Atendida"↓El sistema registra automáticamente el tiempo de respuesta↓La información se almacena para reportes e indicadores FIN
